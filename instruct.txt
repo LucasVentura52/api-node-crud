@@ -1,0 +1,3 @@
+npm i ou npm install -> para baixar as dependências.
+
+npm start -> para iniciar o servidor.
