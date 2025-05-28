@@ -1,6 +1,7 @@
+
 # API REST Node.js + MySQL com Autenticação JWT
 
-Este projeto é uma API RESTful desenvolvida em **Node.js** conectada a um banco de dados **MySQL** (utilizando XAMPP). A aplicação permite realizar autenticação via **JWT**, além de operações de **CRUD de produtos**, e possui uma interface simples feita em **HTML + JavaScript + Bootstrap 5** para consumo da API.
+Este projeto é uma API RESTful desenvolvida em **Node.js** conectada a um banco de dados **MySQL** (utilizando XAMPP). A aplicação permite realizar autenticação via **JWT**, além de operações de **CRUD de produtos**, e possui uma interface simples feita em **HTML + JavaScript + Bootstrap 5**, agora utilizando **Axios** para comunicação com a API.
 
 Além disso, o frontend possui um sistema de **bloqueio de tentativas de login após 3 erros**, garantindo uma camada adicional de segurança.
 
@@ -16,7 +17,8 @@ Além disso, o frontend possui um sistema de **bloqueio de tentativas de login a
 - [bcryptjs](https://www.npmjs.com/package/bcryptjs) – Criptografia de senha
 - [dotenv](https://www.npmjs.com/package/dotenv) – Gerenciamento de variáveis de ambiente
 - [Bootstrap 5](https://getbootstrap.com/) – Frontend responsivo e elegante
-- [Fetch API](https://developer.mozilla.org/pt-BR/docs/Web/API/Fetch_API) – Requisições HTTP no frontend
+- [Axios](https://axios-http.com/) – Cliente HTTP para consumo da API
+- [SweetAlert2](https://sweetalert2.github.io/) – Pop-ups elegantes para feedback ao usuário
 
 ---
 
@@ -40,8 +42,6 @@ api-node-mysql/
 │   └── produtoRoutes.js    → Rotas de produtos
 │
 ├── public/
-│   ├── assets/
-│   │   └── css/            → Arquivos CSS (index.css, login.css)
 │   ├── index.html          → Interface CRUD de produtos
 │   └── login.html          → Interface de login e cadastro
 │
@@ -56,32 +56,27 @@ api-node-mysql/
 ## 🔧 Instalação e Execução
 
 ### ✅ Pré-requisitos:
-
 - Node.js instalado
 - XAMPP rodando com MySQL ativo
 
 ### 🚀 Passos:
 
 1. Clone este repositório ou extraia o ZIP na sua pasta de projetos:
-
    ```bash
    cd /Applications/XAMPP/htdocs/  # Ou sua pasta preferida
    ```
 
 2. Instale as dependências:
-
    ```bash
    npm install
    ```
 
 3. Configure o arquivo `.env` na raiz do projeto:
-
    ```bash
    JWT_SECRET=seuSegredoAqui
    ```
 
 4. Crie o banco de dados no MySQL usando o phpMyAdmin ou terminal:
-
    ```sql
    CREATE DATABASE apinode;
 
@@ -101,10 +96,9 @@ api-node-mysql/
    );
    ```
 
-5. Cadastre um usuário via rota `/api/auth/register` ou direto pelo banco (criptografando a senha corretamente).
+5. Cadastre um usuário via rota `/api/auth/register` ou diretamente no banco (criptografando a senha corretamente).
 
 6. Inicie o servidor:
-
    ```bash
    npm start
    ```
@@ -119,21 +113,21 @@ api-node-mysql/
 
 ## 🔐 Autenticação
 
-- Login via **JWT**.
+- Login via **JWT**.  
 - Após o login, é retornado um token que deve ser enviado no cabeçalho `Authorization` nas requisições protegidas.
 
 ---
 
 ## 🔗 Rotas da API
 
-| Método | Rota               | Descrição         | Protegida |
-| ------ | ------------------ | ----------------- | --------- |
-| POST   | /api/auth/login    | Login             | ❌        |
-| POST   | /api/auth/register | Registrar usuário | ❌        |
-| GET    | /api/produtos      | Listar produtos   | ✅        |
-| POST   | /api/produtos      | Criar produto     | ✅        |
-| PUT    | /api/produtos/:id  | Atualizar produto | ✅        |
-| DELETE | /api/produtos/:id  | Deletar produto   | ✅        |
+| Método | Rota                       | Descrição            | Protegida |
+|--------|-----------------------------|----------------------|-----------|
+| POST   | /api/auth/login             | Login                | ❌        |
+| POST   | /api/auth/register          | Registrar usuário    | ❌        |
+| GET    | /api/produtos               | Listar produtos      | ✅        |
+| POST   | /api/produtos               | Criar produto        | ✅        |
+| PUT    | /api/produtos/:id           | Atualizar produto    | ✅        |
+| DELETE | /api/produtos/:id           | Deletar produto      | ✅        |
 
 ---
 
@@ -145,7 +139,8 @@ api-node-mysql/
   - Cadastro de usuário
   - CRUD completo de produtos (criar, listar, editar e excluir)
   - Interface protegida por autenticação JWT
-  - Design responsivo e simples
+  - Comunicação com API utilizando **Axios**
+  - Design moderno, bonito e responsivo
 
 ---
 
@@ -156,19 +151,13 @@ api-node-mysql/
 - ✔️ Senhas criptografadas com **bcrypt**
 - ✔️ Token com tempo de expiração configurável
 - ✔️ No frontend, após **3 tentativas de login inválidas**, o botão de login é bloqueado. O usuário precisa clicar em "**Liberar tentativas**" para tentar novamente.
-
----
-
-## 💡 Melhorias Futuras (opcional)
-
-- ⏳ Bloqueio temporário automático (ex.: bloqueia por 2 minutos)
-- 🔐 Bloqueio inteligente no backend
-- 📊 Logs de tentativas de login
-- 🛡️ Sistema de roles (admin, user)
+- ✔️ Tratamento de erros de autenticação diretamente no frontend com Axios e SweetAlert.
 
 ---
 
 ## 👨‍💻 Autor
 
 **Lucas Ventura**  
-Projeto de exemplo para fins acadêmicos e práticos com Node.js + MySQL + JWT + Frontend HTML+Bootstrap
+Projeto de exemplo para fins acadêmicos e práticos com Node.js + MySQL + JWT + Axios + Frontend HTML + Bootstrap
+
+---

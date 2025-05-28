@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 26/05/2025 às 21:38
+-- Tempo de geração: 28/05/2025 às 14:00
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -39,8 +39,9 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`id`, `nome`, `preco`, `descricao`) VALUES
-(4, 'Teste', 5000.00, 'TEste'),
-(5, 'sadasd', 50000.00, 'asdsad');
+(4, 'Teste', 500.00, 'Teste'),
+(5, 'Teste Dois', 50.00, 'Teste'),
+(7, 'Teste Três', 5.00, 'Teste');
 
 -- --------------------------------------------------------
 
@@ -60,7 +61,6 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
 (1, 'admin', '$2b$10$8T5H2IybEfnEobFqX3dk.ezqrmnk1S1Qp.E3vLzSD6b9NnQw4OtfW'),
-(2, 'lucas', '123456'),
 (3, 'teste', '$2b$10$Cs9v9ui3q0V7XtwoEagLh.aguC0W8H6pbBj4EBTzBns1Cfa3MXpBS'),
 (5, 'ventura', '$2b$10$rohU9euWj/v/lHWPWPkr7O9sCBOSaT7Du/5IuX2TBU1tZaZsJIdsW');
 
@@ -89,7 +89,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `users`
