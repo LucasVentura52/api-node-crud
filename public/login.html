@@ -22,6 +22,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      flex-direction: column;
     }
 
     .card {
@@ -73,6 +74,21 @@
     .btn-outline-secondary {
       border-radius: 10px;
     }
+
+    .reset-btn {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #555;
+      cursor: pointer;
+      background: none;
+      border: none;
+      text-decoration: underline;
+      display: none;
+    }
+
+    .reset-btn:hover {
+      color: #007bff;
+    }
   </style>
 </head>
 
@@ -93,15 +109,29 @@
           <input type="password" id="password" class="form-control" placeholder="Digite sua senha">
         </div>
         <div class="d-grid gap-2">
-          <button class="btn btn-primary" onclick="login()">Login</button>
+          <button class="btn btn-primary" id="btnLogin" onclick="login()">Login</button>
           <button class="btn btn-outline-secondary" onclick="cadastrar()">Cadastrar</button>
         </div>
       </div>
     </div>
+
+    <button class="reset-btn" id="btnLiberar" onclick="liberarTentativas()">Liberar tentativas</button>
   </div>
 
   <script>
+    let tentativas = parseInt(localStorage.getItem('tentativas')) || 0;
+    const limiteTentativas = 3;
+
+    if (tentativas >= limiteTentativas) {
+      bloquearLogin();
+    }
+
     function login() {
+      if (tentativas >= limiteTentativas) {
+        Swal.fire('Bloqueado', 'Você excedeu o número de tentativas. Clique em "Liberar tentativas" para tentar novamente.', 'error');
+        return;
+      }
+
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
 
@@ -116,7 +146,19 @@
         body: JSON.stringify({ username, password })
       })
         .then(r => {
-          if (!r.ok) throw new Error('Usuário ou senha inválidos');
+          if (!r.ok) {
+            tentativas++;
+            localStorage.setItem('tentativas', tentativas);
+
+            if (tentativas >= limiteTentativas) {
+              bloquearLogin();
+              Swal.fire('Bloqueado', 'Você excedeu o número de tentativas. Aguarde dois minutos para tentar novamente.', 'error');
+            } else {
+              Swal.fire('Erro', `Usuário ou senha inválidos. Tentativa ${tentativas} de ${limiteTentativas}`, 'error');
+            }
+
+            throw new Error('Usuário ou senha inválidos');
+          }
           return r.json();
         })
         .then(d => {
@@ -126,12 +168,13 @@
 
           localStorage.setItem('token', token);
           localStorage.setItem('expiracao', expiracao);
+          localStorage.removeItem('tentativas');
 
           Swal.fire('Login realizado!', `Seu token expira em: ${expiracao}`, 'success')
             .then(() => window.location.href = 'index.html');
         })
         .catch(err => {
-          Swal.fire('Erro', err.message, 'error');
+          console.log(err.message);
         });
     }
 
@@ -169,6 +212,19 @@
     function formatarDataExpiracao(exp) {
       const data = new Date(exp * 1000);
       return data.toLocaleString();
+    }
+
+    function bloquearLogin() {
+      document.getElementById('btnLogin').disabled = true;
+      document.getElementById('btnLiberar').style.display = 'inline';
+    }
+
+    function liberarTentativas() {
+      tentativas = 0;
+      localStorage.removeItem('tentativas');
+      document.getElementById('btnLogin').disabled = false;
+      document.getElementById('btnLiberar').style.display = 'none';
+      Swal.fire('Liberado', 'Você pode tentar novamente.', 'success');
     }
   </script>
 
